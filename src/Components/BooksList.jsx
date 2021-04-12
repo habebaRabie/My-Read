@@ -1,16 +1,13 @@
 import React, {Component} from 'react'
 import Book from './Book'
-import * as BooksAPI from '../BooksAPI'
-
 
 class BooksList extends Component{
 
-
-    state = {
-        CurrentlyReading: [],
-        WanttoRead: [],
-        Read: []
-    };
+    // state = {
+    //     CurrentlyReading: [],
+    //     WanttoRead: [],
+    //     Read: []
+    // };
     
     // BooksAPI.get(this.props.book.id)
     // .then((Books)=>{
@@ -19,6 +16,8 @@ class BooksList extends Component{
     //   }))
     // })
 
+
+
     render(){
         return (
             <div className="list-books">
@@ -26,22 +25,22 @@ class BooksList extends Component{
                   <h1>MyReads</h1>
                 </div>
                 <div className="list-books-content">
-                  <div>
-                    <div className="bookshelf">
-                      <h2 className="bookshelf-title">Currently Reading</h2>
-                      <div className="bookshelf-books">
-                        <ol className="books-grid">
-                          <Book />
-                        </ol>
-                      </div>
-                    </div>
+                    <div>
+                        <div className="bookshelf">
+                            <h2 className="bookshelf-title">Currently Reading</h2>
+                            <div className="bookshelf-books">
+                                <ol className="books-grid">
+                                    {/* <Book /> */}
+                                </ol>
+                            </div>
+                        </div>
                     
-                  </div>
+                    </div>
                 </div>
                 <div className="open-search">
                   <button onClick={() => this.setState()}>Add a book</button>
                 </div>
-              </div>
+            </div>
         )
     }
     
