@@ -1,44 +1,48 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Book from './Book'
 
+
 class BooksList extends Component{
-
-    // state = {
-    //     CurrentlyReading: [],
-    //     WanttoRead: [],
-    //     Read: []
-    // };
-    
-    // BooksAPI.get(this.props.book.id)
-    // .then((Books)=>{
-    //   this.setState(()=>({
-    //     Books
-    //   }))
-    // })
-
 
 
     render(){
         return (
             <div className="list-books">
                 <div className="list-books-title">
-                  <h1>MyReads</h1>
+                  <h1>My Reads</h1>
                 </div>
+
                 <div className="list-books-content">
-                    <div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Currently Reading</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
-                                    {/* <Book /> */}
-                                </ol>
+                    {this.props.bookshelves.map((shelf, i) =>{
+                        return(
+                            <div key={i}>
+                                <div className="bookshelf">
+                                    <h2 className="bookshelf-title">{shelf.name}</h2>
+                                    <div className="bookshelf-books">
+                                        <ol className="books-grid">
+                                            {/* Render list of books */}
+                                            {console.log(this.props.MyBooks)}
+                                            {this.props.MyBooks.filter((book) => (book.shelf === shelf.key)).map((item, index) => {
+                                                // Return book component
+                                                // Pass props to book component
+                                                return <Book key={index} book={item} MovingBooksToAnotherShelf={this.props.MovingBooksToAnotherShelf}/>})}
+                                        </ol>
+                                    </div>
+                                </div>
+                        
                             </div>
-                        </div>
+                        )
+                       
+                    })}
                     
-                    </div>
                 </div>
                 <div className="open-search">
-                  <button onClick={() => this.setState()}>Add a book</button>
+                    <Link to='/search'>
+                        <button >Add a book</button>
+                    </Link>
+
+                  
                 </div>
             </div>
         )

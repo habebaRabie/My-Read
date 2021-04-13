@@ -1,43 +1,36 @@
 import React, {Component} from 'react'
-import * as BooksAPI from '../BooksAPI'
+import {Link} from 'react-router-dom'
+// import * as BooksAPI from '../BooksAPI'
 import Book from './Book'
-import propTypes from 'prop-types'
+// import propTypes from 'prop-types'
 
 class SearchForBook extends Component{
 
-    // static propTypes = {
-    //     Books: propTypes.array.isRequired,
-    // }
-
     render(){                  
-
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <button className="close-search" onClick={ this.clearQuery }>Close</button> 
+                    <Link to='/'>
+                        <button className="close-search" onClick={this.props.clearQuery}>Close</button> 
+                    </Link>
                     <div className="search-books-input-wrapper">
                         <input type="text" placeholder="Search by title or author"
-                            value={this.query}
-                            onChange={(event)=>{this.updateQuery(event.target.value)}}
+                            value={this.props.query}
+                            onChange={(event)=>{this.props.updateQuery(event.target.value)}}
                         />
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {this.searchingBooks.map((book) =>(
-                            <li key= {book.id}>
-                                <div>
-                                    <Book book={book}/>
-                                </div>
-                            </li>
+                        {this.props.SearchBooks.map((book, index) =>(
+                             <Book key={index} book={book} MovingBooksToAnotherShelf={this.props.MovingBooksToAnotherShelf}/>
                         ))}
                     </ol>
 
                 </div>
           </div>
         )
-    }
-    
+    }   
 }
 
 export default SearchForBook

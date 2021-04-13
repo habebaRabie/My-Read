@@ -7,9 +7,9 @@ import './App.css'
 
 
 const bookshelves = [
-  { key: 'CurrentlyReading', name: 'Currently Reading' },
-  { key: 'WantToRead', name: 'Want to Read' },
-  { key: 'Read', name: 'Read' }
+  { key: 'currentlyReading', name: 'Currently Reading' },
+  { key: 'wantToRead', name: 'Want to Read' },
+  { key: 'read', name: 'Read' }
 ];
 
 class BooksApp extends Component {
@@ -30,29 +30,49 @@ class BooksApp extends Component {
   }
 
   updateQuery =(query)=>{
+    if(query !== ''){
+      this.searchingBooks(query)
+    }
+    else{
+      this.setState({SearchBooks: []})
+    }
     this.setState(() =>({
       query: query.trim()
     }))
+    console.log(query)
   }     
 
   clearQuery = () =>{
-    this.updateQuery('')
+    this.setState(() =>({
+      query: '',
+      SearchBooks: []
+    }))
   }
 
+  searchingBooks = (query) =>{
+    BooksAPI.search(query)
+    .then((Books)=>{
+      console.log(Books)
+      if(this.state.query){
+        if(Books.error){
+          this.setState({SearchBooks: []})
+        }
+        else{
+          this.setState({SearchBooks: Books})
+        }
+      }
+      
+    })
+  }
+        
 
-  searchingBooks = query === '' 
-        ? BooksAPI.search(query)
-            .then(()=>{
-                this.setState({SearchBooks: []})
-            })
-        : BooksAPI.search(query)
-            .then((Books)=>{
-            this.setState({SearchBooks: Books})
-             }) 
 
   //condition if => the user choose none else => another option
   MovingBooksToAnotherShelf = (book, shelf) => {
     BooksAPI.update(book, shelf)
+    .then((Book) => {
+      console.log(Book)
+    })
     if (shelf === 'none'){
       this.setState((currentstate) => ({
         MyBooks: currentstate.MyBooks.filter((e) => {
@@ -60,12 +80,37 @@ class BooksApp extends Component {
         })
       }))
     }else{
-      this.setState((currentstate) => ({
-        MyBooks: currentstate.MyBooks.filter((e) => e.id !== book.id).concat(book)
+
+      const Mynewbooks = this.state.MyBooks
+      if(book.shelf === undefined){
+        Mynewbooks.push({
+          ...book,
+          shelf: shelf
+        })
+      }
+      else{
+        this.state.MyBooks.map((updatedbook)=>{
+          if(updatedbook.id === book.id){
+            updatedbook.shelf = shelf
+          }
+          return (updatedbook)
+        })
+      }
+      }
+      
+
+      const NewSearchBook = this.state.SearchBooks.map((updatedSearchBook)=>{
+        if(updatedSearchBook.id === book.id){
+          updatedSearchBook.shelf = shelf
+        }
+        
+        return (updatedSearchBook)
+      })
+
+      this.setState(() => ({
+        SearchBooks: NewSearchBook
       }))
     }
-  }
-  
 
   render() {
     return (
@@ -74,9 +119,11 @@ class BooksApp extends Component {
           render={()=>(
             <BooksList
               MyBooks={this.state.MyBooks}
-              bookshelves = {this.bookshelves}
+              SearchBooks={this.state.SearchBooks}
+              searchingBooks = {this.searchingBooks}
+              bookshelves = {bookshelves}
               MovingBooksToAnotherShelf = {this.MovingBooksToAnotherShelf}
-              query= {this.query}
+              query= {this.state.query}
               updateQuery = {this.updateQuery}
               clearQuery = {this.clearQuery}
             />
@@ -88,7 +135,7 @@ class BooksApp extends Component {
               SearchBooks={this.state.SearchBooks}
               MyBooks={this.state.MyBooks}
               MovingBooksToAnotherShelf = {this.MovingBooksToAnotherShelf}
-              query= {this.query}
+              query= {this.state.query}
               updateQuery = {this.updateQuery}
               clearQuery = {this.clearQuery}
             />
