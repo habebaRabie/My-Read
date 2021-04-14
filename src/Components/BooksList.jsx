@@ -26,7 +26,7 @@ class BooksList extends Component{
                                             {this.props.MyBooks.filter((book) => (book.shelf === shelf.key)).map((item, index) => {
                                                 // Return book component
                                                 // Pass props to book component
-                                                return <Book key={index} book={item} MovingBooksToAnotherShelf={this.props.MovingBooksToAnotherShelf}/>})}
+                                                return <Book key={index} book={item} MovingBooksToAnotherShelf={this.props.MovingBooksToAnotherShelf}  />})}
                                         </ol>
                                     </div>
                                 </div>

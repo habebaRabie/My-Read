@@ -23,7 +23,7 @@ class SearchForBook extends Component{
                 <div className="search-books-results">
                     <ol className="books-grid">
                         {this.props.SearchBooks.map((book, index) =>(
-                             <Book key={index} book={book} MovingBooksToAnotherShelf={this.props.MovingBooksToAnotherShelf}/>
+                             <Book key={index} book={book} MovingBooksToAnotherShelf={this.props.MovingBooksToAnotherShelf} />
                         ))}
                     </ol>
 

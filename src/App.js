@@ -37,7 +37,7 @@ class BooksApp extends Component {
       this.setState({SearchBooks: []})
     }
     this.setState(() =>({
-      query: query.trim()
+      query: query
     }))
     console.log(query)
   }     
@@ -54,17 +54,36 @@ class BooksApp extends Component {
     .then((Books)=>{
       console.log(Books)
       if(this.state.query){
-        if(Books.error){
+        if(Books.error ){
           this.setState({SearchBooks: []})
         }
         else{
-          this.setState({SearchBooks: Books})
+          const search = Books.map((searchbook)=>{
+            this.state.MyBooks.map((book) =>{
+              if(searchbook.id === book.id){
+                searchbook.shelf = book.shelf
+              }
+            })
+            return searchbook
+          })
+          this.setState({SearchBooks: search})
         }
       }
+
       
     })
   }
         
+
+
+  // validationImage =() =>{
+  //   if(this.state.MyBooks.imageLinks.thumbnail){
+  //     return(this.state.MyBooks.imageLinks.thumbnail)
+  //   }
+  //   else{
+  //     return false
+  //   }
+  // }
 
 
   //condition if => the user choose none else => another option
@@ -79,7 +98,8 @@ class BooksApp extends Component {
           return e.id !== book.id
         })
       }))
-    }else{
+    }
+    else{
 
       const Mynewbooks = this.state.MyBooks
       if(book.shelf === undefined){
@@ -126,6 +146,7 @@ class BooksApp extends Component {
               query= {this.state.query}
               updateQuery = {this.updateQuery}
               clearQuery = {this.clearQuery}
+              // validationImage = {this.validationImage}
             />
           )}
         />
