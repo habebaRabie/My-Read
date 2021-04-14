@@ -74,18 +74,6 @@ class BooksApp extends Component {
     })
   }
         
-
-
-  // validationImage =() =>{
-  //   if(this.state.MyBooks.imageLinks.thumbnail){
-  //     return(this.state.MyBooks.imageLinks.thumbnail)
-  //   }
-  //   else{
-  //     return false
-  //   }
-  // }
-
-
   //condition if => the user choose none else => another option
   MovingBooksToAnotherShelf = (book, shelf) => {
     BooksAPI.update(book, shelf)
